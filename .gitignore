@@ -47,3 +47,10 @@ app/models/*.pth
 # System
 .DS_Store
 Thumbs.db
+
+# Audio files
+*.wav
+*.mp3
+*.ogg
+*.flac
+*.m4a
