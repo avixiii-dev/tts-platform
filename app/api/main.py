@@ -10,6 +10,7 @@ from pathlib import Path
 import tempfile
 import logging
 from typing import Optional
+from . import voice_training
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -49,7 +50,7 @@ class TTSRequest(BaseModel):
     speed: float = 1.0
     pitch: float = 1.0
     emotion: str = "neutral"
-    speaker_idx: Optional[int] = None
+    voice_id: Optional[str] = None  # Add voice_id for custom voices
 
 def load_tts_model(language: str):
     """Load TTS model for a specific language"""
@@ -132,12 +133,18 @@ async def text_to_speech(request: TTSRequest):
         logger.error(f"Error in TTS processing: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e))
 
+# Include voice training router
+app.include_router(voice_training.router, prefix="/api/v1", tags=["voice-training"])
+
+# Update health check to include custom voices
 @app.get("/health")
 async def health_check():
-    """Check if the service is running and get system info"""
+    """Check if the service is running and get system info."""
+    custom_voices = len(list(Path("app/models/custom_voices").glob("*.json")))
     return {
         "status": "healthy",
         "cuda_available": torch.cuda.is_available(),
         "loaded_models": list(tts_instances.keys()),
-        "available_languages": list(LANGUAGE_MODELS.keys())
+        "available_languages": list(LANGUAGE_MODELS.keys()),
+        "custom_voices": custom_voices
     }
