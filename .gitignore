@@ -43,6 +43,8 @@ yarn-error.log*
 # Models and data
 app/models/*.wav
 app/models/*.pth
+app/models/custom_voices/
+app/data/voice_samples/
 
 # System
 .DS_Store
