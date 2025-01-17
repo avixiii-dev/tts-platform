@@ -54,6 +54,7 @@ tts-platform/
 └── README.md
 ```
 
+<!--
 ## License
 
 MIT
