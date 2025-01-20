@@ -54,7 +54,7 @@ tts-platform/
 └── README.md
 ```
 
-<!--
+
 ## License
 
-MIT
+MIT avixiii
